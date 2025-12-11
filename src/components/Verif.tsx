@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CheckCircle2, XCircle, Loader2, Calendar, Award, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { XCircle, Loader2, Calendar, Award, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { TABLES, buildUrl } from '../utils/datatabel';
 
 interface CertificateData {

@@ -1,4 +1,4 @@
-import { Users, Eye, FileBadge } from 'lucide-react';
+import { Users, Eye } from 'lucide-react';
 
 // Data Dummy (Status dihapus)
 const dataPengurus = [
