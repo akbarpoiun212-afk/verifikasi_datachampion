@@ -4,7 +4,7 @@ import { BarChart3, CheckCircle, Award } from 'lucide-react';
 interface TableauItem {
     id: number;
     code: string;
-    posisi: string;
+    jabatan: string;
     nama: string;
     jenis: string;
 }
@@ -98,7 +98,7 @@ export default function Tableau() {
                                     {/* Tag Role: Kuning/Amber Lembut (Lebih kontras dari kuning biasa) */}
                                     <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 ring-1 ring-amber-600/20 font-bold text-[10px] uppercase tracking-wide">
                                         <Award size={12} />
-                                        {item.posisi}
+                                        {item.jabatan}
                                     </div>
                                 </div>
 
