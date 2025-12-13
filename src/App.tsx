@@ -67,7 +67,7 @@ function VerificationPage() {
             </div>
 
             <h1 className="text-3xl font-extrabold text-slate-800 mb-2">Verifikasi Dokumen</h1>
-            <p className="text-slate-500 mb-8 text-base">Masukan Kode Sertifikat yang tertera di dokumen.</p>
+            <p className="text-slate-500 mb-8 text-base">Silahkan Masukan Nomor Sertifikat yang tertera</p>
 
             <form onSubmit={handleVerify} className="space-y-4">
               <div className="relative group">
