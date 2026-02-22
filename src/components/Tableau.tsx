@@ -1,31 +1,17 @@
 import { useState, useEffect } from 'react';
 import { BarChart3, CheckCircle, Award } from 'lucide-react';
-
-interface TableauItem {
-    id: number;
-    code: string;
-    jabatan: string;
-    nama: string;
-    jenis: string;
-}
+import { getTableauData } from '../data';
+import type { SertifikatRow } from '../data';
 
 export default function Tableau() {
-    const [dataTableau, setDataTableau] = useState<TableauItem[]>([]);
+    const [dataTableau, setDataTableau] = useState<SertifikatRow[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(
-                    'https://eeslmmfvjdqdmfwkjriq.supabase.co/rest/v1/Tableau?select=*&apikey=sb_publishable_6bxkx4_2Df6Owbj9vP2Rew_KIPECKau'
-                );
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
+                const result = await getTableauData();
                 setDataTableau(result);
             } catch (err) {
                 setError(err instanceof Error ? err.message : String(err));
@@ -85,7 +71,7 @@ export default function Tableau() {
                             className="group bg-white p-6 rounded-xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200 hover:border-blue-400 relative overflow-hidden flex flex-col justify-between h-full"
                         >
                             {/* Dekorasi Background halus */}
-                            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-50 to-transparent rounded-bl-full opacity-50 transition-opacity group-hover:opacity-100"></div>
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-br from-blue-50 to-transparent rounded-bl-full opacity-50 transition-opacity group-hover:opacity-100"></div>
 
                             <div>
                                 {/* Header Card: Tags */}
