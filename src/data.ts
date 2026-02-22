@@ -1,5 +1,4 @@
 // data.ts
-// @ts-ignore
 import Papa from "papaparse";
 
 export interface SertifikatRow {
