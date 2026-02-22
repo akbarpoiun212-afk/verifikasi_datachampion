@@ -1,30 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Users, CheckCircle, BadgeCheck } from 'lucide-react';
-
-interface FungsioItem {
-    id: number;
-    code: string;
-    nama: string;
-    jabatan: string;
-}
+import { getFungsioData } from '../data';
+import type { SertifikatRow } from '../data';
 
 export default function Fungsio2024() {
-    const [dataPengurus, setDataPengurus] = useState<FungsioItem[]>([]);
+    const [dataPengurus, setDataPengurus] = useState<SertifikatRow[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(
-                    'https://eeslmmfvjdqdmfwkjriq.supabase.co/rest/v1/Fungsio?select=*&apikey=sb_publishable_6bxkx4_2Df6Owbj9vP2Rew_KIPECKau'
-                );
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
+                const result = await getFungsioData();
                 setDataPengurus(result);
             } catch (err) {
                 setError(err instanceof Error ? err.message : String(err));
