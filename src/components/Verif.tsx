@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
 import { XCircle, Loader2, Calendar, Award, ShieldCheck, ArrowLeft } from 'lucide-react';
-import { TABLES, buildUrl } from '../utils/datatabel';
+import { searchByCode } from '../data';
+import type { SertifikatRow } from '../data';
 
-interface CertificateData {
-    id: string;
-    code: string;
-    nama: string;
-    jenis: string;
-    jabatan: string;
-    tanggal: string;
-    valid: string;
-    created_at: string;
-}
+type CertificateData = SertifikatRow;
 
 interface VerifProps {
     code: string;
@@ -37,26 +29,20 @@ export default function Verif({ code, onReset }: VerifProps) {
             setError(false);
 
             try {
-                // Fetching logic remains the same (check Fungsio, then Tableau)
-
                 // Cek tabel 1 → Fungsio
-                let url1 = buildUrl(TABLES.FUNGSI, code);
-                let res1 = await fetch(url1);
-                let json1 = await res1.json();
+                let result1 = await searchByCode(code, 'fungsio');
 
-                if (json1 && json1.length > 0) {
-                    setData(json1[0]);
+                if (result1) {
+                    setData(result1);
                     setLoading(false);
                     return;
                 }
 
                 // Jika tidak ditemukan → cek tabel 2 → Tableau
-                let url2 = buildUrl(TABLES.TABLEAU, code);
-                let res2 = await fetch(url2);
-                let json2 = await res2.json();
+                let result2 = await searchByCode(code, 'tableau');
 
-                if (json2 && json2.length > 0) {
-                    setData(json2[0]);
+                if (result2) {
+                    setData(result2);
                 } else {
                     setError(true);
                 }
@@ -105,7 +91,7 @@ export default function Verif({ code, onReset }: VerifProps) {
     }
 
     // JIKA DATA DITEMUKAN
-    const isValid = data.valid === 'TRUE';
+    const isValid = data.valid === true || data.valid === 1 || data.valid === '1' || data.valid === 'TRUE';
     const headerColorClass = isValid
         ? 'bg-white border border-emerald-200' // White background for valid
         : `bg-gradient-to-r from-${COLORS.INVALID_RED}-500 to-${COLORS.INVALID_RED}-700`; // Invalid Red Gradient
