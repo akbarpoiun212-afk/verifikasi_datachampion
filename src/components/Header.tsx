@@ -58,6 +58,12 @@ export default function Header() {
                                     >
                                         Mini Bootcamp Tableau
                                     </Link>
+                                    <Link
+                                        to="/daftar-introml"
+                                        className="block px-5 py-3 text-sm text-gray-800 hover:bg-purple-100 hover:text-purple-700 font-semibold border-l-4 border-transparent hover:border-purple-600 transition-all"
+                                    >
+                                        Webinar Introduction to ML
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -81,6 +87,7 @@ export default function Header() {
                         <p className="px-4 text-xs font-black text-blue-700 uppercase tracking-wider">📋 Daftar Penerima</p>
                         <Link to="/daftar-pengurus-2024" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-3 rounded-lg text-sm text-gray-800 hover:bg-blue-200 font-semibold border-l-4 border-blue-500 pl-4 transition-all">👥 Pengurus 2024</Link>
                         <Link to="/daftar-tableau" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-3 rounded-lg text-sm text-gray-800 hover:bg-yellow-200 font-semibold border-l-4 border-yellow-500 pl-4 transition-all">📊 Bootcamp Tableau</Link>
+                        <Link to="/daftar-introml" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-3 rounded-lg text-sm text-gray-800 hover:bg-purple-200 font-semibold border-l-4 border-purple-500 pl-4 transition-all">🧠 Webinar Intro ML</Link>
                     </div>
                 </div>
             )}

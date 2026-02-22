@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
-import { BarChart3, CheckCircle, Award } from 'lucide-react';
-import { getTableauData } from '../data';
+import { Brain, CheckCircle, Award, Users, UserCheck } from 'lucide-react';
+import { getIntromlData } from '../data';
 import type { SertifikatRow } from '../data';
 
-export default function Tableau() {
-    const [dataTableau, setDataTableau] = useState<SertifikatRow[]>([]);
+export default function Introml() {
+    const [dataIntroml, setDataIntroml] = useState<SertifikatRow[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [activeTab, setActiveTab] = useState<'participants' | 'organizers'>('participants');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await getTableauData();
-                setDataTableau(result);
+                const result = await getIntromlData();
+                setDataIntroml(result);
             } catch (err) {
                 setError(err instanceof Error ? err.message : String(err));
                 console.error("Fetch error:", err);
@@ -45,27 +46,57 @@ export default function Tableau() {
         );
     }
 
+    // Filter data berdasarkan tab
+    const participants = dataIntroml.filter(item => item.status?.toLowerCase() === 'peserta');
+    const organizers = dataIntroml.filter(item => item.status?.toLowerCase() !== 'peserta');
+
+    const displayedData = activeTab === 'participants' ? participants : organizers;
+
     return (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-slate-50 min-h-screen">
 
-            {/* Header Section - Menggunakan Biru sebagai Dominan */}
+            {/* Header Section - Menggunakan Blue & Red sebagai Dominan */}
             <div className="text-center mb-16 animate-fade-in-up">
                 <div className="inline-flex items-center justify-center p-4 bg-white rounded-2xl mb-6 shadow-xl shadow-blue-900/5 ring-1 ring-slate-100">
-                    <BarChart3 className="text-blue-600 w-10 h-10" />
+                    <Brain className="text-blue-600 w-10 h-10" />
                 </div>
                 <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-3 tracking-tight">
-                    Data Champion Society
+                    Webinar Introduction To Machine Learning
                 </h2>
                 <p className="text-lg text-slate-500 font-medium max-w-2xl mx-auto">
-                    Event Mini Bootcamp Data Visualization With Tableau
+                    Event Webinar Pengenalan Machine Learning
                 </p>
-                <div className="w-16 h-1.5 bg-blue-600 rounded-full mx-auto mt-6 opacity-80"></div>
+                <div className="w-16 h-1.5 bg-linear-to-r from-red-600 to-blue-600 rounded-full mx-auto mt-6 opacity-80"></div>
+            </div>
+
+            {/* Tab Navigation */}
+            <div className="flex gap-4 mb-8 justify-center flex-wrap">
+                <button
+                    onClick={() => setActiveTab('participants')}
+                    className={`px-6 py-3 rounded-lg font-bold flex items-center gap-2 transition-all duration-300 ${activeTab === 'participants'
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-400/40'
+                        : 'bg-white text-blue-700 border-2 border-blue-300 hover:bg-blue-50'
+                        }`}
+                >
+                    <UserCheck size={20} />
+                    Participants ({participants.length})
+                </button>
+                <button
+                    onClick={() => setActiveTab('organizers')}
+                    className={`px-6 py-3 rounded-lg font-bold flex items-center gap-2 transition-all duration-300 ${activeTab === 'organizers'
+                        ? 'bg-red-600 text-white shadow-lg shadow-red-400/40'
+                        : 'bg-white text-red-700 border-2 border-red-300 hover:bg-red-50'
+                        }`}
+                >
+                    <Users size={20} />
+                    Organizers ({organizers.length})
+                </button>
             </div>
 
             {/* Grid Card Layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {dataTableau.length > 0 ? (
-                    dataTableau.map((item) => (
+                {displayedData.length > 0 ? (
+                    displayedData.map((item) => (
                         <div
                             key={item.id}
                             className="group bg-white p-6 rounded-xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-200 hover:border-blue-400 relative overflow-hidden flex flex-col justify-between h-full"
@@ -84,7 +115,7 @@ export default function Tableau() {
                                     {/* Tag Role: Kuning/Amber Lembut (Lebih kontras dari kuning biasa) */}
                                     <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 ring-1 ring-amber-600/20 font-bold text-[10px] uppercase tracking-wide">
                                         <Award size={12} />
-                                        {item.jabatan}
+                                        {item.jenis}
                                     </div>
                                 </div>
 
@@ -94,7 +125,7 @@ export default function Tableau() {
                                         {item.nama}
                                     </h3>
                                     <p className="text-sm text-slate-500 font-medium leading-relaxed">
-                                        {item.jenis}
+                                        {item.status}
                                     </p>
                                 </div>
                             </div>
@@ -116,7 +147,7 @@ export default function Tableau() {
                 ) : (
                     <div className="col-span-full flex flex-col items-center justify-center py-16 bg-white rounded-2xl border border-dashed border-slate-300">
                         <div className="p-4 bg-slate-50 rounded-full mb-3">
-                            <BarChart3 className="text-slate-400 w-8 h-8" />
+                            <Brain className="text-slate-400 w-8 h-8" />
                         </div>
                         <p className="text-slate-500 text-lg font-medium">Tidak ada data sertifikat ditemukan</p>
                     </div>

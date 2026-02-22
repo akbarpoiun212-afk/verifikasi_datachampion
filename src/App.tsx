@@ -6,7 +6,9 @@ import { ScanLine, Search } from 'lucide-react';
 import Header from './components/Header';
 import Fungsio2024 from './components/Fungsio2024';
 import Tableau from './components/Tableau';
+import Introml from './components/Introml';
 import Verif from './components/Verif';
+
 
 // --- Komponen VerificationPage yang Disesuaikan ---
 function VerificationPage() {
@@ -59,10 +61,10 @@ function VerificationPage() {
           <div className="max-w-md mx-auto bg-white rounded-3xl shadow-2xl p-8 border border-slate-100 backdrop-blur-sm text-center relative overflow-hidden animate-in fade-in zoom-in duration-500">
 
             {/* Gradient Header (Aksen) */}
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-rose-500"></div>
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-cyan-500 via-blue-500 to-rose-500"></div>
 
             {/* Icon (Aksen) */}
-            <div className="mb-6 inline-block p-4 bg-gradient-to-tr from-blue-50 to-cyan-50 rounded-full text-blue-600 shadow-lg shadow-blue-500/10">
+            <div className="mb-6 inline-block p-4 bg-linear-to-tr from-blue-50 to-cyan-50 rounded-full text-blue-600 shadow-lg shadow-blue-500/10">
               <ScanLine size={48} className="animate-pulse" />
             </div>
 
@@ -87,7 +89,7 @@ function VerificationPage() {
               {/* Tombol Submit (Warna CTA Utama: Biru) */}
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-700 hover:from-blue-700 
+                className="w-full bg-linear-to-r from-blue-600 to-cyan-700 hover:from-blue-700 
                              hover:to-cyan-800 text-white font-bold py-3.5 rounded-xl shadow-lg 
                              shadow-blue-500/30 transform hover:-translate-y-0.5 transition-all active:scale-95 
                              flex items-center justify-center gap-2"
@@ -123,6 +125,7 @@ function App() {
             <Route path="/verify/:code" element={<VerificationPage />} />
             <Route path="/daftar-pengurus-2024" element={<Fungsio2024 />} />
             <Route path="/daftar-tableau" element={<Tableau />} />
+            <Route path="/daftar-introml" element={<Introml />} />
           </Routes>
         </main>
       </div>

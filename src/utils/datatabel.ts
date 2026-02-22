@@ -1,15 +1,22 @@
 // src/utils/datatabel.ts
+// Deprecated: Menggunakan Google Sheets via data.ts
+// File ini tetap dipertahankan untuk backward compatibility
 
-const BASE_URL = "https://eeslmmfvjdqdmfwkjriq.supabase.co/rest/v1";
-const API_KEY = "sb_publishable_6bxkx4_2Df6Owbj9vP2Rew_KIPECKau";
+import { searchByCode } from '../data';
 
-// Daftar nama tabel Supabase yang ingin dipakai
 export const TABLES = {
-    FUNGSI: "Fungsio",
-    TABLEAU: "Tableau"
+    FUNGSI: "fungsio",
+    TABLEAU: "tableau"
 };
 
-// Helper untuk membuat URL lengkap
-export const buildUrl = (table: string, code: string) => {
-    return `${BASE_URL}/${table}?code=eq.${code}&select=*&apikey=${API_KEY}`;
+// Helper legacy yang menggunakan data.ts
+export const buildUrl = (_table: string, _code: string) => {
+    // Function ini tidak lagi digunakan, gunakan searchByCode() dari data.ts
+    // Disimpan untuk backward compatibility
+    return '';
+};
+
+// Wrapper untuk searchByCode
+export const findCertificate = async (code: string, table: 'fungsio' | 'tableau' = 'fungsio') => {
+    return await searchByCode(code, table);
 };
