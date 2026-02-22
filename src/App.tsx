@@ -8,6 +8,7 @@ import Fungsio2024 from './components/Fungsio2024';
 import Tableau from './components/Tableau';
 import Verif from './components/Verif';
 
+
 // --- Komponen VerificationPage yang Disesuaikan ---
 function VerificationPage() {
   const { code } = useParams();
@@ -59,15 +60,15 @@ function VerificationPage() {
           <div className="max-w-md mx-auto bg-white rounded-3xl shadow-2xl p-8 border border-slate-100 backdrop-blur-sm text-center relative overflow-hidden animate-in fade-in zoom-in duration-500">
 
             {/* Gradient Header (Aksen) */}
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-rose-500"></div>
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-cyan-500 via-blue-500 to-rose-500"></div>
 
             {/* Icon (Aksen) */}
-            <div className="mb-6 inline-block p-4 bg-gradient-to-tr from-blue-50 to-cyan-50 rounded-full text-blue-600 shadow-lg shadow-blue-500/10">
+            <div className="mb-6 inline-block p-4 bg-linear-to-tr from-blue-50 to-cyan-50 rounded-full text-blue-600 shadow-lg shadow-blue-500/10">
               <ScanLine size={48} className="animate-pulse" />
             </div>
 
             <h1 className="text-3xl font-extrabold text-slate-800 mb-2">Verifikasi Dokumen</h1>
-            <p className="text-slate-500 mb-8 text-base">Silahkan Masukan Nomor Sertifikat yang tertera</p>
+            <p className="text-slate-500 mb-8 text-base">Masukan Kode Sertifikat yang tertera di dokumen.</p>
 
             <form onSubmit={handleVerify} className="space-y-4">
               <div className="relative group">
@@ -87,7 +88,7 @@ function VerificationPage() {
               {/* Tombol Submit (Warna CTA Utama: Biru) */}
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-700 hover:from-blue-700 
+                className="w-full bg-linear-to-r from-blue-600 to-cyan-700 hover:from-blue-700 
                              hover:to-cyan-800 text-white font-bold py-3.5 rounded-xl shadow-lg 
                              shadow-blue-500/30 transform hover:-translate-y-0.5 transition-all active:scale-95 
                              flex items-center justify-center gap-2"
