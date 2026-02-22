@@ -1,54 +1,75 @@
-/**
- * @fileoverview data.ts - Berisi mapping logika untuk menentukan tabel Supabase
- * berdasarkan kode sertifikat yang dimasukkan.
- */
+// data.ts
+// @ts-ignore
+import Papa from "papaparse";
 
-interface TableMap {
-    tableName: string | null;
-    roleKey: 'Jabatan' | 'Project' | 'TIDAK DIKETAHUI';
+export interface SertifikatRow {
+    id: string;
+    code: string;
+    nama: string;
+    jenis: string;
+    jabatan: string;
+    tanggal: string;
+    valid: string | number | boolean;
+    created_at: string;
 }
 
+/* ================================
+   GOOGLE SHEET CONFIG
+================================ */
+const SHEET_BASE =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeIlHJZP-Et_0pNI-fKwaCCPlsQLSl1kk8qmyXrjhrToExdUzWdRFwO8agXaTkFjWFZBK3zkYaKdSZ/pub";
+
 /**
- * Fungsi untuk memetakan Prefix Kode Sertifikat ke Nama Tabel Supabase dan Kunci Peran.
- * @param code Kode sertifikat lengkap (misal: CERT-2024-AGT-011)
- * @returns Objek yang berisi nama tabel dan kunci peran/detail yang relevan.
+ * Ganti GID sesuai sheet
  */
-export const getTableAndRole = (code: string): TableMap => {
-    if (!code || code.length < 3) {
-        return { tableName: null, roleKey: 'TIDAK DIKETAHUI' };
-    }
-
-    // Normalisasi kode untuk pemeriksaan yang konsisten
-    const normalizedCode = code.toUpperCase();
-
-    // 1. PENGURUS 2024 (Fungsio)
-    if (normalizedCode.includes('FUNGSIO') || normalizedCode.startsWith('F24')) {
-        return {
-            tableName: 'Fungsio',
-            roleKey: 'Jabatan' // Kolom detail yang digunakan untuk Fungsio
-        };
-    }
-
-    // 2. MINI BOOTCAMP TABLEAU
-    // Asumsi: Kode untuk Tableau dimulai dengan TB atau mengandung TABLEAU
-    // PASTIKAN 'MiniBootcampTableau' ADALAH NAMA TABEL YANG BENAR DI SUPABASE
-    else if (normalizedCode.includes('TABLEAU') || normalizedCode.startsWith('TB')) {
-        return {
-            tableName: 'MiniBootcampTableau',
-            roleKey: 'Project' // Kolom detail yang digunakan untuk Tableau
-        };
-    }
-
-    // 3. TAMBAHKAN LOGIKA UNTUK TABEL LAIN DI SINI
-    /*
-    else if (normalizedCode.startsWith('WDS')) {
-      return {
-        tableName: 'WorkshopDataScience',
-        roleKey: 'Materi'
-      };
-    }
-    */
-
-    // Default jika tidak ada yang cocok
-    return { tableName: null, roleKey: 'TIDAK DIKETAHUI' };
+const SHEETS = {
+    tableau: `${SHEET_BASE}?output=csv&gid=800400786`,
+    fungsio: `${SHEET_BASE}?output=csv&gid=1003072757`, // ← ganti jika gid berbeda
 };
+
+/* ================================
+   HELPERS
+================================ */
+function normalizeValid(val: any): boolean {
+    if (val === true) return true;
+    if (val === 1) return true;
+    if (val === "1") return true;
+    if (typeof val === "string" && val.toUpperCase() === "TRUE") return true;
+    return false;
+}
+
+async function fetchSheet(url: string): Promise<SertifikatRow[]> {
+    const res = await fetch(url);
+    const csv = await res.text();
+
+    const parsed = Papa.parse<SertifikatRow>(csv, {
+        header: true,
+        skipEmptyLines: true,
+    });
+
+    return parsed.data.map((row: SertifikatRow) => ({
+        ...row,
+        valid: normalizeValid(row.valid),
+    }));
+}
+
+/* ================================
+   PUBLIC API
+================================ */
+export async function getTableauData() {
+    return fetchSheet(SHEETS.tableau);
+}
+
+export async function getFungsioData() {
+    return fetchSheet(SHEETS.fungsio);
+}
+
+/* ================================
+   SEARCH BY CODE
+================================ */
+export async function searchByCode(code: string, sheet: 'tableau' | 'fungsio' = 'fungsio'): Promise<SertifikatRow | null> {
+    const sheetUrl = sheet === 'tableau' ? SHEETS.tableau : SHEETS.fungsio;
+    const data = await fetchSheet(sheetUrl);
+    const found = data.find(row => row.code?.toUpperCase() === code.toUpperCase());
+    return found || null;
+}
